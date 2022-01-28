@@ -217,6 +217,7 @@ export class Application<AS extends State = Record<string, any>>
   #keys?: KeyStack;
   #middleware: Middleware<State, Context<State, AS>>[] = [];
   #serverConstructor: ServerConstructor<NativeRequest>;
+  public server: any;
 
   /** A set of keys, or an instance of `KeyStack` which will be used to sign
    * cookies read and set by the application to avoid tampering with the
@@ -472,7 +473,7 @@ export class Application<AS extends State = Record<string, any>>
       const [, hostname, portStr] = match;
       options = { hostname, port: parseInt(portStr, 10) };
     }
-    const server = new this.#serverConstructor(this, options);
+    const server = this.server = new this.#serverConstructor(this, options);
     const { signal } = options;
     const state = {
       closed: false,
